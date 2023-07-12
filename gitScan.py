@@ -1,8 +1,5 @@
 import os
 from git import Repo
-from config import *
-
-config = loadConfig()
 
 def connectGit(path):
     repo = Repo(path)
@@ -28,12 +25,6 @@ def scanChangeFile(path, prev, curr):
         fileName = os.path.basename(str(diff.b_path))
         path = os.path.dirname(str(diff.b_path))
         changeFile = [diff.change_type, path, fileName]
-
         changeFileList.append(changeFile)
     return changeFileList
-
-repoPath = config['ENV']['REPO_PATH']
-prevCommit = config['COMMIT']['PREV_COMMIT']
-currCommit = config['COMMIT']['CURR_COMMIT']
-commitList = scanChangeFile(repoPath, prevCommit, currCommit)
 

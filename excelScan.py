@@ -15,7 +15,5 @@ def loadExcel():
         if idx > 4 and len(row[7]) > 0 :
             deployFile = [pathStrip(row[7]), row[8]]
             deployList.append(deployFile)
-            print(deployFile)
     return deployList
 
-deployList = loadExcel()
