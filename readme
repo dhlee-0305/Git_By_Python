@@ -1,1 +1,2 @@
 pip install gitpython
+pip install python-docx

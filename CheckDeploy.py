@@ -1,8 +1,10 @@
 from config import *
 from gitScan import *
 from excelScan import *
+from logger import *
 
 config = loadConfig()
+log = getLogger('CheckDeploy')
 
 def checkDeploy():
     repoPath = config['ENV']['REPO_PATH']
@@ -13,16 +15,17 @@ def checkDeploy():
     deployList = loadExcel()
 
     # 커밋 리스트 확인
-    print('----- COMMIT LIST CHECK -----')
+    log.debug('----- COMMIT LIST CHECK -----')
     for commit in commitList:
         commitCheck = 'X'
         for deploy in deployList:
             if compareFile(commit[2], deploy[1]) :
                 commitCheck = 'O'
 
-        print('['+commitCheck+'] '+ commit[2])
+        log.debug('['+commitCheck+'] '+ commit[2])
 
-    print('----- DEPLOY LIST CHECK -----')
+
+    log.debug('----- DEPLOY LIST CHECK -----')
 
     # 배포 문서 확인
     for deploy in deployList:
@@ -31,7 +34,7 @@ def checkDeploy():
             if compareFile(deploy[1], commit[2]):
                 deployCheck = 'O'
         
-        print('['+deployCheck+'] '+ deploy[1])
+        log.debug('['+deployCheck+'] '+ deploy[1])
 
 def compareFile(str1, str2):
     return str1.rstrip('.class').rstrip('.java') == str2.rstrip('.class').rstrip('.java')
