@@ -4,15 +4,18 @@ from config import *
 from gitScan import *
 from excelScan import *
 from logger import *
+from elapsed import *
 
 config = loadConfig()
 log = getLogger('CheckDeploy')
 
-def checkDeploy():
+@elapsed
+def main():
     repoPath = config['ENV']['REPO_PATH']
     prevCommit = config['COMMIT']['PREV_COMMIT']
     currCommit = config['COMMIT']['CURR_COMMIT']
     commitList = scanChangeFile(repoPath, prevCommit, currCommit)
+    #printCommit(commitList)
 
     deployList = loadExcel()
 
@@ -29,7 +32,6 @@ def checkDeploy():
 
 
     log.debug('----- DEPLOY LIST CHECK -----')
-
     # 배포 문서 확인
     for deploy in deployList:
         deployCheck = 'X'
@@ -38,12 +40,12 @@ def checkDeploy():
                 deployCheck = 'O'
         
         log.debug('['+deployCheck+'] '+ deploy[1])
-    
-    # printCommit(commitList)
 
 def compareFileName(str1, str2):
-    return re.sub('\$|\d', '', str1).rstrip('.class').rstrip('.java') == re.sub('\$|\d', '', str2).rstrip('.class').rstrip('.java')
+    return re.sub('\$|\d', '', str1).rstrip('.class').rstrip('.java') \
+        == re.sub('\$|\d', '', str2).rstrip('.class').rstrip('.java')
 
+@elapsed
 def printCommit(commitList):
     log.debug('----- PRINT COMMIT LIST -----')
     for commit in commitList:
@@ -59,4 +61,5 @@ def isInnerClassExist(repoPath, filePath, sourceName):
         or os.path.isfile(binPath + '/'+sourceName.rstrip('.java')+'$1.class')
     return ret
 
-checkDeploy()
+if __name__ == '__main__':
+    main()
