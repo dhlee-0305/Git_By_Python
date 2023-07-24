@@ -6,17 +6,14 @@ from excelScan import *
 from logger import *
 from elapsed import *
 
-config = loadConfig()
 log = getLogger('CheckDeploy')
 
 @elapsed
 def main():
+    config = loadConfig()
     repoPath = config['ENV']['REPO_PATH']
-    prevCommit = config['COMMIT']['PREV_COMMIT']
-    currCommit = config['COMMIT']['CURR_COMMIT']
-    commitList = scanChangeFile(repoPath, prevCommit, currCommit)
-    #printCommit(commitList)
 
+    commitList = scanChangeFile()
     deployList = loadExcel()
 
     # 커밋 리스트 확인
@@ -26,19 +23,19 @@ def main():
         for deploy in deployList:
             if compareFileName(commit[2], deploy[1]) :
                 commitCheck = 'O'
+                continue
         if isInnerClassExist(repoPath, commit[1], commit[2]):
             commitCheck = commitCheck + '|I'
         log.debug('['+commitCheck+'] '+ commit[2])
 
-
-    log.debug('----- DEPLOY LIST CHECK -----')
     # 배포 문서 확인
+    log.debug('----- DEPLOY LIST CHECK -----')
     for deploy in deployList:
         deployCheck = 'X'
         for commit in commitList:
             if compareFileName(deploy[1], commit[2]):
                 deployCheck = 'O'
-        
+                continue
         log.debug('['+deployCheck+'] '+ deploy[1])
 
 def compareFileName(str1, str2):

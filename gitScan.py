@@ -1,15 +1,20 @@
 import os
+
 from git import Repo
+from config import *
 
-def connectGit(path):
-    repo = Repo(path)
-    return repo
+def scanChangeFile():
 
-def scanChangeFile(path, prev, curr):
-    repo = connectGit(path)
+    config = loadConfig()
+    
+    repoPath   = config['ENV']['REPO_PATH']
+    ignoreList = config['ENV']['IGNOR_FILE']
+    prevCommit = config['COMMIT']['PREV_COMMIT']
+    currCommit = config['COMMIT']['CURR_COMMIT']
 
-    prev = repo.commit(prev)
-    curr = repo.commit(curr)
+    repo = Repo(repoPath)
+    prev = repo.commit(prevCommit)
+    curr = repo.commit(currCommit)
     diff_index = prev.diff(curr)
 
     '''
@@ -23,8 +28,21 @@ def scanChangeFile(path, prev, curr):
     changeFileList = []
     for diff in diff_index:
         fileName = os.path.basename(str(diff.b_path))
-        path = os.path.dirname(str(diff.b_path))
-        changeFile = [diff.change_type, path, fileName]
-        changeFileList.append(changeFile)
+        if not isIgnore(ignoreList, fileName):
+            path = os.path.dirname(str(diff.b_path))
+            changeFile = [diff.change_type, path, fileName]
+            changeFileList.append(changeFile)
+    
     return changeFileList
+
+def isIgnore(ignoreList, fileName):
+    if ignoreList.find(fileName) != -1:
+        return True
+    else:
+        return False
+
+if __name__ == '__main__':
+    changed = scanChangeFile()
+    for s in changed:
+        print(s)
 
