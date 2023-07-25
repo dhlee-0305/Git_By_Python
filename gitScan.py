@@ -3,7 +3,7 @@ import os
 from git import Repo
 from config import *
 
-def scanChangeFile():
+def commitFile():
 
     config = loadConfig()
     
@@ -42,7 +42,7 @@ def isIgnore(ignoreList, fileName):
         return False
 
 if __name__ == '__main__':
-    changed = scanChangeFile()
+    changed = commitFile()
     for s in changed:
         print(s)
 

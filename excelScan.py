@@ -3,8 +3,8 @@ from config import *
 from typing import Final
 
 config = loadConfig()
-COL_PATH:Final = 7
-COL_FILE:Final = 8
+COL_PATH_IDX:Final = 7
+COL_FILE_IDX:Final = 8
 
 def pathStrip(path):
     return path.lstrip('/').lstrip('\\').rstrip('/').rstrip('\\')
@@ -15,8 +15,8 @@ def loadExcel():
 
     deployList = []
     for idx, row in data.iterrows():
-        if idx > 4 and len(row[COL_PATH]) > 0 :
-            deployFile = {'path':pathStrip(row[COL_PATH]), 'file':row[COL_FILE]}
+        if idx > 4 and len(row[COL_PATH_IDX]) > 0 :
+            deployFile = {'path':pathStrip(row[COL_PATH_IDX]), 'file':row[COL_FILE_IDX]}
             deployList.append(deployFile)
     return deployList
 

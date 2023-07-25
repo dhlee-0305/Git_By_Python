@@ -13,7 +13,7 @@ def main():
     config = loadConfig()
     repoPath = config['ENV']['REPO_PATH']
 
-    commitList = scanChangeFile()
+    commitList = commitFile()
     deployList = loadExcel()
 
     # 커밋 리스트 확인
