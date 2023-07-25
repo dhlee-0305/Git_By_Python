@@ -13,7 +13,11 @@ def loadExcel():
     deployList = []
     for idx, row in data.iterrows():
         if idx > 4 and len(row[7]) > 0 :
-            deployFile = [pathStrip(row[7]), row[8]]
+            deployFile = {'path':pathStrip(row[7]), 'file':row[8]}
             deployList.append(deployFile)
     return deployList
 
+if __name__ == '__main__':
+    deployList = loadExcel()
+    for s in deployList:
+        print(s)

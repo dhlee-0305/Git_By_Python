@@ -30,7 +30,7 @@ def scanChangeFile():
         fileName = os.path.basename(str(diff.b_path))
         if not isIgnore(ignoreList, fileName):
             path = os.path.dirname(str(diff.b_path))
-            changeFile = [diff.change_type, path, fileName]
+            changeFile = {'change_type':diff.change_type, 'path':path, 'file':fileName}
             changeFileList.append(changeFile)
     
     return changeFileList
