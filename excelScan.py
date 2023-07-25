@@ -1,7 +1,10 @@
 import pandas as pd
 from config import *
+from typing import Final
 
 config = loadConfig()
+COL_PATH:Final = 7
+COL_FILE:Final = 8
 
 def pathStrip(path):
     return path.lstrip('/').lstrip('\\').rstrip('/').rstrip('\\')
@@ -12,8 +15,8 @@ def loadExcel():
 
     deployList = []
     for idx, row in data.iterrows():
-        if idx > 4 and len(row[7]) > 0 :
-            deployFile = {'path':pathStrip(row[7]), 'file':row[8]}
+        if idx > 4 and len(row[COL_PATH]) > 0 :
+            deployFile = {'path':pathStrip(row[COL_PATH]), 'file':row[COL_FILE]}
             deployList.append(deployFile)
     return deployList
 
