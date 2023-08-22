@@ -2,11 +2,16 @@ import os
 
 from git import Repo
 from config import *
+from elapsed import *
+from logger import getLogger
 
+log = getLogger('gitScan')
+
+@elapsed
 def commitFile():
 
     config = loadConfig()
-    
+
     repoPath   = config['ENV']['REPO_PATH']
     ignoreList = config['ENV']['IGNOR_FILE']
     prevCommit = config['COMMIT']['PREV_COMMIT']
@@ -25,6 +30,7 @@ def commitFile():
         ’M’ for paths with modified data
         ’T’ for changed in the type paths
     '''
+    log.debug('----- SCAN COMMIT LIST -----')
     changeFileList = []
     for diff in diff_index:
         fileName = os.path.basename(str(diff.b_path))
@@ -32,6 +38,7 @@ def commitFile():
             path = os.path.dirname(str(diff.b_path))
             changeFile = {'change_type':diff.change_type, 'path':path, 'file':fileName}
             changeFileList.append(changeFile)
+            log.debug(changeFile)
     
     return changeFileList
 

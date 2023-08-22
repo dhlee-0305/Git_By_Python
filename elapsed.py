@@ -2,7 +2,7 @@ import time
 
 from logger import *
 
-log = getLogger('CheckDeploy')
+log = getLogger('elapsed')
 
 def elapsed(original_func):
     def _elapsed(*args, **kwargs):

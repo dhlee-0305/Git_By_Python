@@ -1,14 +1,17 @@
 import pandas as pd
 from config import *
 from typing import Final
+from elapsed import *
 
 config = loadConfig()
+
 COL_PATH_IDX:Final = 7
 COL_FILE_IDX:Final = 8
 
 def pathStrip(path):
     return path.lstrip('/').lstrip('\\').rstrip('/').rstrip('\\')
 
+@elapsed
 def loadExcel():
     path = config['ENV']['EXCEL_FILE_PATH']
     data = pd.read_excel(path)
